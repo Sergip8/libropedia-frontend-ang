@@ -3,13 +3,13 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   OnInit,
   output,
   Output,
   SimpleChanges,
 } from "@angular/core";
 import { SelectData, SelectValues } from "./selectModel";
-import { FormsModule } from "@angular/forms";
 import { NgClass } from "@angular/common";
 
 @Component({
@@ -17,7 +17,7 @@ import { NgClass } from "@angular/common";
   standalone: true,
   imports: [NgClass],
   template: `
-    <div [class]="'relative w-full '+data.default.replaceAll(' ', '') ">
+    <div [class]="'relative w-full min-w-54 '+data.default.replaceAll(' ', '') ">
       @if (data.showLabel) {
         <label class=" block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white">Seleccione {{data?.default}}</label>
 
@@ -83,7 +83,10 @@ import { NgClass } from "@angular/common";
   `,
   styles: [``],
 })
-export class SelectCheckComponent implements OnInit {
+export class SelectCheckComponent implements OnInit, OnChanges {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.selectedItem = changes['setValue'].currentValue
+  }
 isChecked(opt:number) {
   return this.selectedList.includes(opt)
 }

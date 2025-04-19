@@ -5,12 +5,14 @@ import { Router, RouterLink } from '@angular/router';
 import {  NoImageFoundDirective } from '../../_core/directives/img-fallback.directive';
 import { AuthorService } from '../../_core/services/AuthorService';
 import { BookService } from '../../_core/services/book.service';
+import { fadeInOut, pageTransition } from '../utils/animations';
 
 @Component({
   selector: 'app-card',
   imports: [NgClass, NgFor, NgIf, RouterLink, UpperCasePipe, DecimalPipe, NoImageFoundDirective],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.css'
+  styleUrl: './card.component.css',
+  animations: [pageTransition],
 })
 export class CardComponent {
 

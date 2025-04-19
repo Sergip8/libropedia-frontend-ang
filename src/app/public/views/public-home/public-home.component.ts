@@ -4,6 +4,7 @@ import { NgFor } from '@angular/common';
 import { BookService } from '../../../_core/services/book.service';
 import { CardModel } from '../../../shared/card/card-model';
 import { PublicRoutes } from '../../public-routing.module';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-public-home',
@@ -14,6 +15,7 @@ import { PublicRoutes } from '../../public-routing.module';
 export class PublicHomeComponent {
   topBooks: CardModel[] = [];
   routes = PublicRoutes
+  loading = false;
 
   constructor(private bookService: BookService) { }
 
@@ -26,7 +28,8 @@ export class PublicHomeComponent {
     return Math.round(rating)
   }
   getTopBooks() {
-    this.bookService.getTopBooks(8).subscribe({
+    this.loading = true;
+    this.bookService.getTopBooks(8).pipe(finalize(() => this.loading = false)).subscribe({
       next: (data) => {
         this.topBooks = data;
         this.topBooks.map((book: CardModel, _) => {this.topBooks[_].cardType = "top"});

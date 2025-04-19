@@ -1,4 +1,4 @@
-<div [ngClass]="getCardClasses()" class=" bg-white rounded-2xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+<div [@pageTransition] [ngClass]="getCardClasses()" class=" bg-white rounded-2xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
   <!-- Card Header with Image -->
   <div *ngIf="cardData.portadaUrl" class="relative">
     <img 

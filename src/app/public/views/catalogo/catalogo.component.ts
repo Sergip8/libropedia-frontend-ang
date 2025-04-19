@@ -7,19 +7,16 @@ import { CardComponent } from '../../../shared/card/card.component';
 import { PaginationComponent } from "../../../shared/pagination/pagination";
 import { FilterBarComponent } from "../../../shared/filter-bar/filter-bar.component";
 
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { debounceTime, distinctUntilChanged, finalize, map, Observable, startWith, switchMap, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../../_core/services/common.service';
+import { LoadingComponent } from "../../../shared/loading/loading.component";
+import { RxLet } from '@rx-angular/template/let';
 
 
-interface FilterValues {
-  value: string;
-  limit: number;
-  type: string;
-}
 @Component({
   selector: 'app-catalogo',
-  imports: [NgFor, CardComponent, PaginationComponent, NgIf, FilterBarComponent],
+  imports: [NgFor, NgIf, CardComponent, PaginationComponent, FilterBarComponent, LoadingComponent, RxLet],
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css'
 })
@@ -31,10 +28,11 @@ export class CatalogoComponent implements OnInit {
     "rating ASC",
     "rating DESC",
   ]
-
+  loading = false;
   filterBooks: BookFilterParams = new BookFilterParams();
-  books: CardModel[] = [];
-  constructor(private bookService: BookService, private route: ActivatedRoute, private commonService: CommonService) {
+  public books$: Observable<CardModel[]>;
+ 
+  constructor(private bookService: BookService, private route: ActivatedRoute, private commonService: CommonService, private router: Router) {
     this.route.queryParams
     .subscribe(params => {
       if(params['search']){
@@ -61,21 +59,23 @@ export class CatalogoComponent implements OnInit {
       console.log(this.filterBooks);
       this.bookService.updateFilter(this.filterBooks);
     });
+    this.books$ = this.bookService.currentFilter$.pipe(
+      startWith(null),
+      debounceTime(100),
+      distinctUntilChanged(),
+      switchMap(filter => this.bookService.getFilterBooks(filter)),
+      tap(data => {
+        this.commonService.updatePagination({ count: data.totalRecords });
+      }),
+      map(data => data.data.map((book: CardModel) => ({
+        ...book,
+        cardType: 'catalog'
+      })))
+    );
    }
    ngOnInit(): void {
+    this.loading = true;
     
-    this.bookService.currentFilter$
-    .pipe(
-      debounceTime(300), 
-      distinctUntilChanged(),
-      switchMap(filter => {this.books = []; return this.bookService.getFilterBooks(filter)}) 
-    )
-    .subscribe(data => {
-      console.log(data);
-      this.books = data.data;
-      this.books.map((book: CardModel, _) => {this.books[_].cardType = "catalog"}); 
-      this.commonService.updatePagination({ count:  data.totalRecords});
-    });
   }
   pagination={
     page: 1,
@@ -96,7 +96,10 @@ export class CatalogoComponent implements OnInit {
     
   }
 
-
+  onResetFilters(){
+    this.filterBooks = new BookFilterParams();
+    this.router.navigate(['catalogo']);
+  }
 
  
 }

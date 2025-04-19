@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { CategoryService } from '../../_core/services/category.service';
 import { AuthorService } from '../../_core/services/AuthorService';
 import { SelectData, SelectValues } from '../select/selectModel';
@@ -21,7 +21,7 @@ export class FilterBarComponent implements OnInit {
 
   constructor(private categoryService: CategoryService, private authorService: AuthorService, private bookService: BookService, private router: Router) { }
 
-
+  @Output() onResetFilters = new EventEmitter<void>()
   catSelectData: SelectData = {
     list: [],
     type: 'single',
@@ -34,6 +34,7 @@ export class FilterBarComponent implements OnInit {
   mobileFiltersOpen = false;
   screenWidth: number = window.innerWidth;
   mobileBreakpoint = 768; // 
+  autorValue = ""
 
   catValue!: number;
   sortSelectData: SelectData = {
@@ -49,15 +50,14 @@ export class FilterBarComponent implements OnInit {
       .pipe(
         debounceTime(300),
         distinctUntilChanged(),
-
       )
       .subscribe(filter => {
         this.catValue = filter.idCategoria;
-
-
+        if (filter.sortBy != "")
+        this.autorValue = filter.sortBy + " " + filter.direcction;
+        console.log(this.autorValue)
       });
   }
-
 
   getCategories() {
     this.categoryService.getCategories({ search: "", limit: 6 }).subscribe({
@@ -97,8 +97,19 @@ export class FilterBarComponent implements OnInit {
   }
 
   sortSelected(sort: string) {
+    console.log(sort);
     this.router.navigate(['catalogo'], { queryParams: { sort: sort }, queryParamsHandling: 'merge' });
   }
+resetFilters(){
+  this.catValue = -1
+  this.autorValue = ""
+  this.bookService.resetFilter();
+  //this.router.navigate(['catalogo']);
+  this.onResetFilters.emit()
+  
+
+}
+  
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = window.innerWidth;

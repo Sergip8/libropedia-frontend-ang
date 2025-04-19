@@ -10,6 +10,7 @@ import { DetailsComponent } from './views/details/details.component';
 import { QuillModule } from 'ngx-quill';
 import { FormsModule } from '@angular/forms';
 import { CommentComponent } from "./views/details/comment.component";
+import { LoadingComponent } from "../shared/loading/loading.component";
 
 
 
@@ -24,8 +25,8 @@ import { CommentComponent } from "./views/details/comment.component";
     FormsModule,
     RouterOutlet,
     CardComponent,
-   
-    CommentComponent
+    CommentComponent,
+    LoadingComponent
 ]
 
 })

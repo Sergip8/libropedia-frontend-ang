@@ -3,6 +3,7 @@ import { Component, Input, Output, EventEmitter, HostListener } from '@angular/c
 import { CommonModule } from '@angular/common';
 import { SafeHtmlPipe } from '../../_core/pipes/safe-html.pipe';
 import { RouterLink } from '@angular/router';
+import { fadeInOut } from '../utils/animations';
 
 // Interface for menu items
 export interface ProfileMenuItem {
@@ -17,13 +18,14 @@ export interface ProfileMenuItem {
   selector: 'app-user-profile-dropdown',
   standalone: true,
   imports: [CommonModule, SafeHtmlPipe, RouterLink],
+  animations: [fadeInOut],
   template: `
     <div class="relative">
       <!-- Profile Button -->
       <button 
         (click)="toggleDropdown()"
         class="flex items-center space-x-2 focus:outline-none"
-        [ngClass]="{'ring-2 ring-blue-500 ring-opacity-50': isOpen}"
+        [ngClass]="{' ': isOpen}"
         aria-haspopup="true"
         [attr.aria-expanded]="isOpen"
       >
@@ -82,7 +84,8 @@ export interface ProfileMenuItem {
       </button>
       
       <!-- Dropdown Menu -->
-      <div *ngIf="isOpen" 
+      <div *ngIf="isOpen"
+          [@fadeInOut]
            class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
            role="menu"
            aria-orientation="vertical"

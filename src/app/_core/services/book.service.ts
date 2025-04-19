@@ -23,14 +23,12 @@ export class BookService {
 
   resetFilter() {
     this.filterState.next(new BookFilterParams());
+    
   }
-
-  
-
   getTopBooks(limit: number) {
     return this.http.get<CardModel[]>(baseUrl +"GetBookTopQualifications/" + limit); // Reemplaza con la URL de tu API
   }
-  getFilterBooks(params: BookFilterParams){
+  getFilterBooks(params: BookFilterParams | null){
     return this.http.post<PaginatedData<CardModel>>(baseUrl +"GetAllBooksPaginated", params); // Reemplaza con la URL de tu API
   }
   getBookDetails(id: number){
