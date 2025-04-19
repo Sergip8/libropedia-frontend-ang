@@ -84,7 +84,7 @@ export class DetailsComponent implements OnInit {
   }
   
   get roundedAverageRating(): string {
-    return this.book?.estadisticas?.calificacionPromedio.toFixed(1) ?? 'N/A';
+    return this.book?.estadisticas?.calificacionPromedio?.toFixed(1) ?? 'N/A';
   }
   
   onComment() {

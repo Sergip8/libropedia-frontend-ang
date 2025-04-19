@@ -26,7 +26,7 @@ export class CardComponent {
     
     switch(this.cardData.cardType) {
       case 'top':
-        return `${baseClasses} bg-gradient-to-br bg-indigo-50 from-indigo-50 to-indigo-100 border border-indigo-200`;
+        return `${baseClasses} bg-gradient-to-br bg-indigo-50 border border-indigo-200`;
       case 'author':
         return `${baseClasses} bg-white border border-blue-200 author-card`;
       case 'catalog':
