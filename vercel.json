@@ -1,4 +1,9 @@
 {
+    "build": {
+    "env": {
+      "ANGULAR_APP_API_URL": "https://bookstore-test.azurewebsites.net/api/"
+    }
+},
     "routes": [
       { "src": "^/dist/cbb_locales/browser/(.*)$", "dest": "/dist/cbb_locales/browser/$1" },
       { "src": "^/(?!api|_next|static|.*\\.(js|css|svg|png|jpg|jpeg|gif|ico|woff|woff2|ttf|eot|json|geojson)$)(.*)$", "dest": "/dist/store-front-ang/browser/index.html" }
