@@ -1,4 +1,4 @@
-# 🧩 Angular Standalone Components App
+# 🧩 Libropedia
 
 Este es un proyecto web desarrollado con **Angular** utilizando la arquitectura de **Standalone Components**, enfocado en modularidad, reutilización de componentes y una interfaz limpia. El proyecto incluye componentes como una barra de filtros y un sistema de comentarios.
 
@@ -13,17 +13,6 @@ Este es un proyecto web desarrollado con **Angular** utilizando la arquitectura 
 - **Estilos:** Tailwind
 - **Gestión de paquetes:** npm
 
----
-
-## 📁 Estructura del proyecto
-
-src/ ├── app/ │ ├── app.component.ts # Componente raíz │ ├── app.routes.ts # Definición de rutas │ ├── app.config.ts # Configuración inicial │ └── shared/ │ ├── filter-bar/ # Barra de filtros │ └── comments/ # Comentarios de usuarios ├── index.html # HTML principal ├── main.ts # Punto de entrada └── styles.css # Estilos globales
-
-yaml
-Copy
-Edit
-
----
 
 ## 📦 Instalación
 
