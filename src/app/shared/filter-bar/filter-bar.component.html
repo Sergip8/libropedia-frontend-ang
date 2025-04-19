@@ -1,10 +1,51 @@
-
-<div class="flex gap-4 p-4 bg-white shadow-md rounded-lg justify-between">
-    <div class="flex gap-4">
-        <app-search [selectedItem]="authorId" [placeholder]="'Busca autor'" [dataList]="authorSelectData" (itemSelected)="authorSelected($event)" (searchInput)="searchInput($event)"></app-search>
-        <app-selectcheck *ngIf="catSelectData.list.length>0" [data]="catSelectData" (selectedSingle)="catSelected($event)" [setValue]="catValue"></app-selectcheck>
-
+<div class="flex flex-col md:flex-row gap-4 p-4 bg-white shadow-md rounded-lg">
+    <!-- Mobile Filter Button (visible only on small screens) -->
+    <div class="md:hidden w-full flex justify-between items-center mb-2">
+      <span class="font-medium text-gray-700">Filtros</span>
+      <button 
+        type="button" 
+        class="flex items-center text-sm text-gray-600 hover:text-indigo-600"
+        (click)="toggleMobileFilters()">
+        <span>{{ mobileFiltersOpen ? 'Ocultar filtros' : 'Mostrar filtros' }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-1">
+          <path *ngIf="!mobileFiltersOpen" stroke-linecap="round" stroke-linejoin="round" d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0l-3.75-3.75M17.25 21L21 17.25" />
+          <path *ngIf="mobileFiltersOpen" stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+      </button>
     </div>
-    <app-selectcheck  [data]="sortSelectData" (selectedSingle)="sortSelected($event)" [setValue]="catValue"></app-selectcheck>
-
-</div>
+  
+    <!-- Filter Container -->
+    <div class="w-full" [ngClass]="{'hidden': !mobileFiltersOpen && isMobileView()}">
+      <div class="flex flex-col md:flex-row gap-4 w-full">
+        <!-- Left group of filters -->
+        <div class="flex flex-col md:flex-row gap-4 flex-grow">
+          <div class="w-full md:w-auto">
+            <app-search 
+              [selectedItem]="authorId" 
+              [placeholder]="'Busca autor'" 
+              [dataList]="authorSelectData" 
+              (itemSelected)="authorSelected($event)" 
+              (searchInput)="searchInput($event)">
+            </app-search>
+          </div>
+          
+          <div class="w-full md:w-auto" *ngIf="catSelectData.list.length > 0">
+            <app-selectcheck 
+              [data]="catSelectData"
+              (selectedSingle)="catSelected($event)" 
+              [setValue]="catValue">
+            </app-selectcheck>
+          </div>
+        </div>
+        
+        <!-- Sort filter (right side on desktop) -->
+        <div class="w-full md:w-auto md:mt-0">
+          <app-selectcheck 
+            [data]="sortSelectData" 
+            (selectedSingle)="sortSelected($event)" 
+            [setValue]="catValue">
+          </app-selectcheck>
+        </div>
+      </div>
+    </div>
+  </div>

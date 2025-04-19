@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { BookService } from '../../../_core/services/book.service';
 import { CardModel } from '../../../shared/card/card-model';
+import { PublicRoutes } from '../../public-routing.module';
 
 @Component({
   selector: 'app-public-home',
@@ -12,7 +13,7 @@ import { CardModel } from '../../../shared/card/card-model';
 })
 export class PublicHomeComponent {
   topBooks: CardModel[] = [];
-
+  routes = PublicRoutes
 
   constructor(private bookService: BookService) { }
 

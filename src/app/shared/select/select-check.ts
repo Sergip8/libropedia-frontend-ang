@@ -17,14 +17,14 @@ import { NgClass } from "@angular/common";
   standalone: true,
   imports: [NgClass],
   template: `
-    <div [class]="'relative w-48 '+data.default.replaceAll(' ', '') ">
+    <div [class]="'relative w-full '+data.default.replaceAll(' ', '') ">
       @if (data.showLabel) {
         <label class=" block mb-2 mt-3 text-sm font-medium text-gray-900 dark:text-white">Seleccione {{data?.default}}</label>
 
       }
       <button
         [ngClass]="setValue =='' ? 'text-gray-400': 'text-black'"
-        class="max-w-48 w-52 justify-between font-normal text-sm  dark:text-white ps-4  py-2 items-center bg-white dark:bg-gray-800 h-9 flex pe-2 focus:outline-none border-1 border-black"
+        class="w-full  justify-between font-normal text-sm  dark:text-white ps-4  py-2 items-center bg-white dark:bg-gray-800 h-9 flex pe-2 focus:outline-none border-1 border-black"
         (click)="toggleDropdown()"
       >
       @if (data.type == "multiple") {

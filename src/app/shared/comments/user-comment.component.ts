@@ -5,8 +5,9 @@ import { CommentService } from '../../_core/services/comment.service';
 import { PaginationComponent } from "../pagination/pagination";
 import { CommonService } from '../../_core/services/common.service';
 import { AuthService } from '../../_core/services/auth.service';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs';
 import { RouterLink } from '@angular/router';
+import { AlertType } from '../alert/alert.type';
 
 @Component({
   selector: 'app-review-list',
@@ -50,7 +51,10 @@ import { RouterLink } from '@angular/router';
 export class ReviewListComponent implements OnInit {
     commentParams = new CommentUserPayload()
     comments: CommentUserRequest[] = []
-
+     readonly alertType = AlertType;
+      alert = this.alertType.Info
+      showAlert = false
+      alertMsg = ""
 
   constructor(private commentService: CommentService, private commonService: CommonService, private authService: AuthService) {}
 
@@ -84,11 +88,30 @@ export class ReviewListComponent implements OnInit {
 
   deleteReview(id: number) {
     if (confirm('¿Estás seguro de eliminar esta reseña?')) {
-      this.commentService.deleteComment(id).subscribe(() => {
-        
-      });
-    }
+      this.commentService.deleteComment(id).pipe(
+                finalize (() => {
+                  this.commonService.updateAlert({
+                    message: this.alertMsg,
+                    alertType: this.alert,
+                    show: true
+                  })
+                })
+              ).subscribe({
+            next: data => {
+              console.log(data)
+                if(data.isError){
+                  this.alert = AlertType.Danger
+                }else{
+                  this.alert = AlertType.Success
+                }
+                this.alertMsg = data.message
+
+            },error: e => {
+              this.alert = AlertType.Danger
+              this.alertMsg = e.error.message
+            }
+    })
   }
 
-  
+}
 }

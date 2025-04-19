@@ -1,4 +1,4 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, HostListener, OnInit, Output } from '@angular/core';
 import { CategoryService } from '../../_core/services/category.service';
 import { AuthorService } from '../../_core/services/AuthorService';
 import { SelectData, SelectValues } from '../select/selectModel';
@@ -6,12 +6,12 @@ import { SelectCheckComponent } from "../select/select-check";
 import { SearchComponent } from "../select/search.component";
 import { BookService } from '../../_core/services/book.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-filter-bar',
-  imports: [SelectCheckComponent, SearchComponent, NgIf],
+  imports: [SelectCheckComponent, SearchComponent, NgIf, NgClass],
   templateUrl: './filter-bar.component.html',
   styleUrl: './filter-bar.component.css'
 })
@@ -31,6 +31,9 @@ export class FilterBarComponent implements OnInit {
   }
   authorSelectData!: SelectValues[]
   authorId!: number;
+  mobileFiltersOpen = false;
+  screenWidth: number = window.innerWidth;
+  mobileBreakpoint = 768; // 
 
   catValue!: number;
   sortSelectData: SelectData = {
@@ -50,7 +53,7 @@ export class FilterBarComponent implements OnInit {
       )
       .subscribe(filter => {
         this.catValue = filter.idCategoria;
-       
+
 
       });
   }
@@ -95,6 +98,23 @@ export class FilterBarComponent implements OnInit {
 
   sortSelected(sort: string) {
     this.router.navigate(['catalogo'], { queryParams: { sort: sort }, queryParamsHandling: 'merge' });
+  }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.screenWidth = window.innerWidth;
+    
+    // Automatically open filters on desktop
+    if (this.screenWidth >= this.mobileBreakpoint) {
+      this.mobileFiltersOpen = true;
+    }
+  }
+  
+  toggleMobileFilters(): void {
+    this.mobileFiltersOpen = !this.mobileFiltersOpen;
+  }
+  
+  isMobileView(): boolean {
+    return this.screenWidth < this.mobileBreakpoint;
   }
 }
 

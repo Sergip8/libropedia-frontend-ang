@@ -13,7 +13,7 @@
         <p class="text-lg md:text-xl mb-8 text-gray-200">
           Explora miles de títulos, desde clásicos hasta los últimos lanzamientos.
         </p>
-        <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1">
+        <a [routerLink]="[routes.Catalogo]" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1">
           Explorar Catálogo
         </a>
       </div>
@@ -38,7 +38,7 @@
          <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
            Regístrate hoy y obtén recomendaciones personalizadas, guarda tus libros favoritos y sé el primero en enterarte de las novedades.
          </p>
-         <a [routerLink]="['auth/register']" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1">
+         <a [routerLink]="[routes.Register]" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:-translate-y-1">
            Crear Cuenta Gratis
          </a>
        </div>
