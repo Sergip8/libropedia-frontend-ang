@@ -5,7 +5,7 @@ import { bookDetail, BookFilterParams, PaginatedData } from '../../models/book';
 import { CardModel } from '../../shared/card/card-model';
 import { BehaviorSubject } from 'rxjs';
 
-const baseUrl = environment.API_URL;
+const baseUrl = environment.ANGULAR_APP_API_URL;
 @Injectable({
   providedIn: 'root'
 })

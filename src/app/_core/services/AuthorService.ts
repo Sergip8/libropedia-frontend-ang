@@ -5,7 +5,7 @@ import { CardModel } from "../../shared/card/card-model";
 import { SelectValues } from "../../shared/select/selectModel";
 
 
-const baseUrl = environment.API_URL;
+const baseUrl = environment.ANGULAR_APP_API_URL;
 @Injectable({
   providedIn: 'root'
 })

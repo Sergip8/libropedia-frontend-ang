@@ -7,7 +7,7 @@ import {BehaviorSubject, finalize, Observable} from "rxjs";
 import { LoginRequest, LoginResponse, RegistrationResponse } from '../../models/auth-models';
 import { environment } from '../../../environments/environment.development';
 
-const baseUrl = environment.API_URL;
+const baseUrl = environment.ANGULAR_APP_API_URL;
 export interface User{
   username: string
   email: string

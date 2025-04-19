@@ -8,7 +8,7 @@ import { CommentResponse, CommentUpdateResponse, CommentUserPayload, CommentUser
 import { PaginatedData } from "../../models/book";
 import { BehaviorSubject } from "rxjs";
 
-const baseUrl = environment.API_URL;
+const baseUrl = environment.ANGULAR_APP_API_URL;
 @Injectable({
   providedIn: 'root'
 })
