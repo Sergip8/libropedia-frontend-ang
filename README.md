@@ -1,59 +1,47 @@
-# StoreFrontAng
+# 🧩 Angular Standalone Components App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+Este es un proyecto web desarrollado con **Angular** utilizando la arquitectura de **Standalone Components**, enfocado en modularidad, reutilización de componentes y una interfaz limpia. El proyecto incluye componentes como una barra de filtros y un sistema de comentarios.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Tecnologías utilizadas
 
-```bash
-ng serve
-```
+- **Framework:** Angular 19
+- **Lenguaje:** TypeScript
+- **Routing:** Angular Router con lazy loading
+- **Componentes:** Standalone Components
+- **Estilos:** Tailwind
+- **Gestión de paquetes:** npm
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 📁 Estructura del proyecto
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+src/ ├── app/ │ ├── app.component.ts # Componente raíz │ ├── app.routes.ts # Definición de rutas │ ├── app.config.ts # Configuración inicial │ └── shared/ │ ├── filter-bar/ # Barra de filtros │ └── comments/ # Comentarios de usuarios ├── index.html # HTML principal ├── main.ts # Punto de entrada └── styles.css # Estilos globales
 
-```bash
-ng generate component component-name
-```
+yaml
+Copy
+Edit
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 📦 Instalación
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Clona el repositorio y ejecuta los siguientes comandos:
 
 ```bash
-ng test
-```
+npm install
+npm start
+Esto iniciará la aplicación en:
+👉 http://localhost:4200/
 
-## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+📌 Requisitos previos
+Node.js 18+
 
-```bash
-ng e2e
-```
+Angular CLI
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+bash
+Copy
+Edit
+npm install -g @angular/cli

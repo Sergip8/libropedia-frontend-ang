@@ -1,0 +1,94 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CommentUserPayload, CommentUserRequest } from '../../models/comment';
+import { CommentService } from '../../_core/services/comment.service';
+import { PaginationComponent } from "../pagination/pagination";
+import { CommonService } from '../../_core/services/common.service';
+import { AuthService } from '../../_core/services/auth.service';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-review-list',
+  standalone: true,
+  imports: [CommonModule, PaginationComponent, RouterLink],
+  template: `
+   <div class="max-w-4xl mx-auto p-4">
+      <h2 class="text-xl font-semibold mb-4">Mis Reseñas</h2>
+
+      <div *ngIf="comments.length === 0">No tienes reseñas aún.</div>
+
+      <div *ngFor="let review of comments" class="flex gap-4 mb-6 bg-white rounded-xl shadow p-4">
+        <img [src]="review.portadaUrl" alt="portada" class="w-24 h-32 object-cover rounded-md" />
+
+        <div class="flex-1">
+          <a [routerLink]="'/details/'+review.idLibro" class="text-lg font-bold">{{ review.titulo }}</a>
+          <p class="text-sm text-gray-600">{{ review.editorial }} • {{ review.anioPublicacion }}</p>
+
+          <div class="mt-2 text-yellow-500 font-medium">
+            ★ {{ review.calificacion }} / 5
+          </div>
+
+          <p class="mt-2 text-sm text-gray-700 italic" [innerHTML]="review.comentario"></p>
+          <p class="text-xs text-gray-400 mt-1">{{ review.fechaResena | date:'medium' }}</p>
+
+        </div>
+        <div class="flex gap-2 h-10">
+          <button (click)="editReview(review)" class="cursor-pointer px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">
+            📝 Editar
+          </button>
+          <button (click)="deleteReview(review.idResena)" class=" cursor-pointer px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600">
+            🗑️ Eliminar
+          </button>
+        </div>
+      </div>
+
+      <app-pagination></app-pagination>
+    </div>
+  `
+})
+export class ReviewListComponent implements OnInit {
+    commentParams = new CommentUserPayload()
+    comments: CommentUserRequest[] = []
+
+
+  constructor(private commentService: CommentService, private commonService: CommonService, private authService: AuthService) {}
+
+  ngOnInit() {
+    this.commentService.updateFilter({userId: this.authService.getUserId()})
+     this.commentService.commentPayload$
+        .pipe(
+          debounceTime(300), 
+          distinctUntilChanged(),
+          switchMap(filter => {this.comments = []; return this.commentService.getUserComments(filter)}) 
+        )
+        .subscribe(data => {
+          console.log(data);
+          this.comments = data.data;
+          this.commonService.updatePagination({ count:  data.totalRecords});
+        });
+  }
+
+  
+  editReview(review: CommentUserRequest
+  ) {
+    // this.updatedData = {
+    //     idResena: review.idResena,
+    //     comentario: comment.comment,
+    //     idUsuario: this.userId,
+    //     calificacion: comment.rating
+    //   };
+    // Aquí puedes navegar a un formulario o abrir un modal
+    console.log('Editar reseña:', review);
+  }
+
+  deleteReview(id: number) {
+    if (confirm('¿Estás seguro de eliminar esta reseña?')) {
+      this.commentService.deleteComment(id).subscribe(() => {
+        
+      });
+    }
+  }
+
+  
+}

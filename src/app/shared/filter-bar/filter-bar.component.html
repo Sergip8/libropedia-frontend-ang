@@ -1,0 +1,10 @@
+
+<div class="flex gap-4 p-4 bg-white shadow-md rounded-lg justify-between">
+    <div class="flex gap-4">
+        <app-search [selectedItem]="authorId" [placeholder]="'Busca autor'" [dataList]="authorSelectData" (itemSelected)="authorSelected($event)" (searchInput)="searchInput($event)"></app-search>
+        <app-selectcheck *ngIf="catSelectData.list.length>0" [data]="catSelectData" (selectedSingle)="catSelected($event)" [setValue]="catValue"></app-selectcheck>
+
+    </div>
+    <app-selectcheck  [data]="sortSelectData" (selectedSingle)="sortSelected($event)" [setValue]="catValue"></app-selectcheck>
+
+</div>

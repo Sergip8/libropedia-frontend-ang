@@ -1,0 +1,69 @@
+<div [ngClass]="getCardClasses()" class=" bg-white rounded-2xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
+  <!-- Card Header with Image -->
+  <div *ngIf="cardData.portadaUrl" class="relative">
+    <img 
+    [appNoImageFound]="'/assets/images/not_found.png'"
+      [src]="cardData.portadaUrl" 
+      [alt]="cardData.titulo || ''" 
+      class="w-full h-60 object-cover rounded-t-2xl">
+   
+  </div>
+  <!-- Card Content -->
+  <div class="flex flex-col justify-between p-6 space-y-3">
+    <div [ngClass]="cardData.resumen ? ' h-38' : ' h-22'">
+
+      <h3 class="text-lg font-semibold text-gray-800">{{ cardData.titulo }} ({{cardData.anioPublicacion}})</h3>
+  
+      <a *ngIf="cardData.autor"
+         class="text-sm font-medium cursor-pointer" 
+         (click)="onClickAuthor(cardData.idAutor ?? 0)"
+         [ngClass]="{
+           'text-blue-600': cardData.cardType === 'top',
+           'text-purple-600': cardData.cardType === 'author',
+           'text-teal-600': cardData.cardType === 'catalog'
+         }">
+        {{ cardData.autor }}
+        </a>
+  
+      <!-- Rating (authors only) -->
+      <div *ngIf="cardData.rating" class="flex items-center my-1">
+        <div class="flex">
+          <ng-container *ngFor="let star of [1,2,3,4,5]">
+            <svg class="w-4 h-4" 
+                 [ngClass]="star <= cardData.rating! ? 'text-yellow-400' : 'text-gray-300'"
+                 fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+            </svg>
+          </ng-container>
+        </div>
+        <span class="text-xs text-gray-500">{{ cardData.rating | number: '1.1-2'}}/5</span>
+      </div>
+  
+      <p class="text-sm line-clamp-3 text-gray-600">
+        {{ cardData.resumen }}
+      </p>
+  
+      <!-- Tags -->
+     
+    </div>
+<div class="flex flex-col gap-4 ">
+  <div  class="flex flex-wrap gap-2  cursor-pointer">
+    <span class="float-left" 
+          class="px-2 py-1 text-xs font-medium rounded-full"
+          (click)="onClickCat(cardData.idCategoria ?? 0)"
+          [ngClass]="{
+            'bg-blue-100 text-blue-700': cardData.cardType === 'top',
+            'bg-purple-100 text-purple-700': cardData.cardType === 'author',
+            'bg-teal-100 text-teal-700': cardData.cardType === 'catalog'
+          }">
+      {{ cardData.categoria }}
+    </span>
+  </div>
+  <div  *ngIf="cardData.cardType === 'catalog' || cardData.cardType === 'top'">
+    <a [routerLink]="['/details/'+cardData.idLibro]" class=" float-end inline-block bg-indigo-600 text-white hover:bg-indigo-700 text-sm font-semibold py-2 px-4 rounded-full transition duration-300">
+      Ver Detalles
+    </a>
+  </div>
+</div>
+  </div>
+</div>
