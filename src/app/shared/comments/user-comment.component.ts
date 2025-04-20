@@ -8,18 +8,20 @@ import { AuthService } from '../../_core/services/auth.service';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import { AlertType } from '../alert/alert.type';
+import { LoadingComponent } from "../loading/loading.component";
+import { pageTransition } from '../utils/animations';
 
 @Component({
   selector: 'app-review-list',
   standalone: true,
-  imports: [CommonModule, PaginationComponent, RouterLink],
+  imports: [CommonModule, PaginationComponent, RouterLink, LoadingComponent],
+  animations: [pageTransition],
   template: `
    <div class="max-w-4xl mx-auto p-4">
       <h2 class="text-xl font-semibold mb-4">Mis Reseñas</h2>
-
-      <div *ngIf="comments.length === 0">No tienes reseñas aún.</div>
-
-      <div *ngFor="let review of comments" class="flex gap-4 mb-6 bg-white rounded-xl shadow p-4">
+      <div *ngIf="comments.length === 0 && !loading">No tienes reseñas aún.</div>
+      <app-loading *ngIf="loading"></app-loading>
+      <div *ngFor="let review of comments" class="flex gap-4 mb-6 bg-white rounded-xl shadow p-4" [@pageTransition]>
         <img [src]="review.portadaUrl" alt="portada" class="w-24 h-32 object-cover rounded-md" />
 
         <div class="flex-1">
@@ -55,20 +57,19 @@ export class ReviewListComponent implements OnInit {
       alert = this.alertType.Info
       showAlert = false
       alertMsg = ""
-
+    loading = false
   constructor(private commentService: CommentService, private commonService: CommonService, private authService: AuthService) {}
-
   ngOnInit() {
     this.commentService.updateFilter({userId: this.authService.getUserId()})
      this.commentService.commentPayload$
         .pipe(
-          debounceTime(300), 
           distinctUntilChanged(),
-          switchMap(filter => {this.comments = []; return this.commentService.getUserComments(filter)}) 
+          switchMap(filter => {this.comments = []; this.loading =true; return this.commentService.getUserComments(filter)}) 
         )
         .subscribe(data => {
           console.log(data);
           this.comments = data.data;
+          this.loading = false
           this.commonService.updatePagination({ count:  data.totalRecords});
         });
   }
@@ -94,6 +95,7 @@ export class ReviewListComponent implements OnInit {
                     message: this.alertMsg,
                     alertType: this.alert,
                     show: true
+                   
                   })
                 })
               ).subscribe({
@@ -103,6 +105,7 @@ export class ReviewListComponent implements OnInit {
                   this.alert = AlertType.Danger
                 }else{
                   this.alert = AlertType.Success
+                   this.comments = this.comments.filter(c => c.idResena != id)
                 }
                 this.alertMsg = data.message
 
