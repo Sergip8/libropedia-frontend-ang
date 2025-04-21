@@ -67,4 +67,35 @@ Componentes reutilizables y utilidades:
 - **Escalabilidad**: Arquitectura modular y componentes reutilizables.
 - **Internacionalización**: Preparado para mostrar textos y mensajes en español.
 
----
+## Instalación y Ejecución
+
+Sigue estos pasos para instalar y ejecutar el proyecto en tu máquina local:
+
+### Prerrequisitos
+
+Asegúrate de tener instalados los siguientes programas:
+
+1. **Node.js** (versión 16 o superior): [Descargar Node.js](https://nodejs.org/)
+2. **Angular CLI** (versión 15 o superior): Instálalo globalmente con el siguiente comando:
+   ```bash
+   npm install -g @angular/cli
+
+3. **Git: Descargar Git**
+Clonar el repositorio
+Clona el repositorio del proyecto en tu máquina local:
+    ```bash
+    git clone https://github.com/Sergip8/libropedia-frontend-ang.git
+
+4. Instalar dependencias
+Navega a la carpeta del proyecto y ejecuta el siguiente comando para instalar las dependencias:
+
+    ```bash
+    cd storeFrontAng
+    npm install
+
+5. Ejecutar el proyecto en modo desarrollo
+Para iniciar el servidor de desarrollo, ejecuta:
+    ```bash
+    ng serve
+
+Esto iniciará la aplicación en http://localhost:4200/. Abre tu navegador y navega a esa URL para ver la aplicación en acción.
